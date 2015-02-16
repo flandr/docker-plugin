@@ -152,18 +152,6 @@ public class DockerTemplate extends DockerTemplateBase implements Describable<Do
         }
     }
 
-    public String getDnsString() {
-        return Joiner.on(" ").join(dnsHosts);
-    }
-
-    public String getVolumesString() {
-	return Joiner.on(" ").join(volumes);
-    }
-
-    public String getVolumesFrom() {
-        return volumesFrom;
-    }
-
     public String getRemoteFsMapping() {
         return remoteFsMapping;
     }
@@ -191,15 +179,12 @@ public class DockerTemplate extends DockerTemplateBase implements Describable<Do
     /**
      * Initializes data structure that we don't persist.
      */
+    @Override
     protected Object readResolve() {
         super.readResolve();
 
         labelSet = Label.parse(labelString);
         return this;
-    }
-
-    public String getDisplayName() {
-        return "Image of " + image;
     }
 
     public DockerCloud getParent() {
@@ -286,11 +271,11 @@ public class DockerTemplate extends DockerTemplateBase implements Describable<Do
         return cmd;
     }
 
-    @Override
     /**
      * Provide a sensible default - templates are for slaves, and you're mostly going
      * to want port 22 exposed.
      */
+    @Override
     public Iterable<PortBinding> getPortMappings() {
 
         if(Strings.isNullOrEmpty(bindPorts) ) {
